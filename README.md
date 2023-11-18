@@ -1,6 +1,6 @@
 # AAI 551 Project 2: "Captain Veggie"
 
-Group Members: Genesis Cevallos and Robert Plastina
+Group Members: Aleese Mukhamedjanova, Eugene Kozlakov, Genesis Cevallos
 
 ## Folders
 #### /inputOutputFiles
