@@ -10,5 +10,12 @@ def main():
   game.initializeGame()
   game.intro()
   #TODO: handle remaining Veggies changes, Captain, and Rabbit movement while reprinting field. Maybe a while loop?
-  game.gameOver()
-  game.highScore()
+
+  # genesis: using print field for testing
+  game.printField()
+
+  # game.gameOver()
+  # game.highScore()
+
+
+main()
