@@ -15,7 +15,7 @@ def main():
   while choice != "N":
     # genesis: using print field for testing - feel free to grab and change as needed
     game.printField()
-    choice = int(input("continue? Y/N - "))
+    choice = (input("\nContinue? Y/N - "))
 
   # game.gameOver()
   # game.highScore()
