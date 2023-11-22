@@ -25,12 +25,33 @@
 1. main.py
 
 
-## Assigned Files
+
+## Completed Files
+
+--Functions within GameEngine.py--
+- [x] initializeGame()
+    - [x] a. initVeggies()
+    - [x] b. initCaptain()
+    - [x] c. initRabbits()
+- [ ] remainingVeggies()
+- [x] intro()
+- [ ] printField()
+- [ ] getScore()
+- [ ] moveRabbits()
+- [ ] moveCaptain()
+    - [ ] a. moveCptVertical()
+    - [ ] b. moveCptHorizontal()
+- [ ] gameOver()
+- [ ] highscore()
+
 #### Genesis
-- assigned files here (TODO)
+- initVeggie(), edited printField() and intro()
+- TODO: remainingVeggies(), while loop in main
 
 #### Eugene
-- assigned files here (TODO)
+- Set up classes/inheritance, started initVeggie()
+- TODO: getScore(), gameOver(), highscore()
 
 #### Aleese
-- assigned files here (TODO)
+- initCaptain(), initRabbit(), edited printField() and intro()
+- TODO: moveRabbits(), moveCpt()/vertical/horizontal
