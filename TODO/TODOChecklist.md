@@ -43,10 +43,11 @@
     - [ ] b. moveCptHorizontal()
 - [ ] gameOver()
 - [ ] highscore()
+- [ ] BONUS()!!!!!!!!
 
 #### Genesis
 - initVeggie(), edited printField() and intro()
-- TODO: remainingVeggies(), while loop in main
+- TODO: remainingVeggies(), while loop in main, setup BONUS in GameEngine.py
 
 #### Eugene
 - Set up classes/inheritance, started initVeggie()
