@@ -11,8 +11,11 @@ def main():
   game.intro()
   #TODO: handle remaining Veggies changes, Captain, and Rabbit movement while reprinting field. Maybe a while loop?
 
-  # genesis: using print field for testing
-  game.printField()
+  choice = "Y"
+  while choice != "N":
+    # genesis: using print field for testing - feel free to grab and change as needed
+    game.printField()
+    choice = int(input("continue? Y/N - "))
 
   # game.gameOver()
   # game.highScore()
