@@ -38,11 +38,12 @@ class GameEngine:
             line = file.readline()
             line = line.split(",")
 
-            col = int(line[1])
-            row = int(line[2])
+            row = int(line[1])
+            col = int(line[2])
 
             # initialize the 2D list "field"
-            self.__field = [[None for _ in range(row)] for _ in range(col)]
+            # debug: switching around col and row
+            self.__field = [[None for _ in range(col)] for _ in range(row)]
 
             # for each row in file, create veggie object and append to list
             for line in file:
