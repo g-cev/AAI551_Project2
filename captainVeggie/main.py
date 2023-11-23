@@ -16,6 +16,7 @@ def main():
     # genesis: using print field for testing - feel free to grab and change as needed
     game.printField()
     choice = (input("\nContinue? Y/N - "))
+    game.moveRabbits()
 
   # game.gameOver()
   # game.highScore()

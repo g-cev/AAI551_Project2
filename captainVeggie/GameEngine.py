@@ -4,6 +4,7 @@ from Captain import Captain
 from Rabbit import Rabbit
 from Veggie import Veggie
 from FieldInhabitant import FieldInhabitant
+from Creature import Creature
 # Aleese: I added this import statement because I edited printField() to just check if the current position has a
 # FieldInhabitant rather than individually checking if it has a rabbit, captain, veg. However, Python would not
 # recognize FieldInhabitant without importing it -- unsure why. I feel there should be a way to check this w/o importing.
@@ -189,7 +190,43 @@ class GameEngine:
       return self.__score
 
     def moveRabbits(self):
-      return 1
+
+        # For each rabbit...
+        for i in range(self.__NUMBEROFRABBITS):
+
+            # Get current position of rabbit
+            x_current = self.__rabbitList[i].getXCoord()
+            y_current = self.__rabbitList[i].getYCoord()
+
+            # Randomly choose whether to move one position left, right, or neither
+            x_move = random.randint(-1, 1)
+
+            # Randomly choose whether to move one position down, up, or neither
+            y_move = random.randint(-1, 1)
+
+            # Determine potential new position of rabbit after moving
+            x_new = x_current + x_move
+            y_new = y_current + y_move
+
+            # If the new position is out of bounds, forfeit the movement
+            # TODO: Check this condition actually works as intended
+            if x_new < 0 or y_new < 0 or x_new >= len(self.__field[0]) or y_new >= len(self.__field):
+                continue
+
+            # Else if the new position is another rabbit or the Captain, forfeit the movement
+            elif isinstance(self.__field[y_new][x_new], Creature):
+                continue
+
+            # Else, the new position should either be empty or have a vegetable, and the rabbit will move
+            else:
+
+                # Set new xy-position of the rabbit object
+                self.__rabbitList[i].setXCoord(x_new)
+                self.__rabbitList[i].setYCoord(y_new)
+
+                # Move rabbit to new position in the field and set its previous location to None
+                self.__field[y_new][x_new] = self.__rabbitList[i]
+                self.__field[y_current][x_current] = None
 
     def moveCptVertical(self):
       return 1
