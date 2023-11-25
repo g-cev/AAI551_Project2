@@ -1,5 +1,6 @@
 import os
 import random
+import pickle
 from Captain import Captain
 from Rabbit import Rabbit
 from Veggie import Veggie
@@ -252,11 +253,63 @@ class GameEngine:
         return 1
 
     def gameOver(self):
-        # outputs gameover message
-        return 1
+        #retrieve pointers
+        basket = self.__captain.getBasket() #retrieve the list containing vegetables captain picked up
+        uniqueVeggies = self.__captain.getUniqueVeggies() #return set of names of unique vegetables picked up by Captain
 
+        print("GAME OVER")
+        print("Basket Contents:")
+
+        #for every unique vegetable picked up by the player
+        for veg in uniqueVeggies:
+            #print out the name, point value, quantity, and total points earned from that veggie
+            print(f"{veg} (x{basket.count(veg)}) = {veg.getPoints() * basket.count(veg)} pts") #Sample output: Potato, 5 points (x5) = 25 pts
+        
+        #printing final score
+        print(f"Final score: {self.__score}")
+        #deleting new objects, so that they're not just hanging around. Not sure if it nukes object or pointer to object
+        #del uniqueVeggies
+        #del basket    
+        #commenting out bc unsure if data leakge would be a problem or not.
+    
     def highScore(self):
-        return 1
+      
+      #"Key Function" used for sorting list. Given that the list is loaded back as 
+      #a list of tuple pairs (name, highscore), i had to define a "Key Function" for
+      #the .sort() function "key" parameter so that it would sort descending by high score,
+      #not by alphabetical order.
+      #Had to define within highScore function, as it would not recognize outside of it.
+      def keyFunc(userPair):
+        #when called, return the score as the sort key, which is the second item in the Tuple pair.
+        return userPair[1]
+      
+      #initializing list which will be pickled/dumped into.
+      playerData = []
+
+      #"if the file exists, load it."
+      if os.path.exists(self.__HIGHSCOREFILE):
+        with open(self.__HIGHSCOREFILE, "rb") as file:
+          playerData = pickle.load(file)
+
+      #reading in user initials, and then retrieving the first 3 letters.
+      userInitials = input("Please input three letters for your initials: ")
+      userInitials = userInitials[:3].upper() #slicing in only first 3 characters of user input, in case they get funny. 
+
+      #appending a tuple the list of scores
+      playerData.append(tuple((userInitials, self.__score)))
+      #sorting the data based on score. Sorted descensding.
+      playerData.sort(key = keyFunc, reverse = True)
+
+      print("Name | Score")
+      for pair in playerData: 
+          #for every tuple pair in the list, print out the name (center aligned with 5 reserved chars and the score)
+          print(f"{format(pair[0],'^5s')}| {pair[1]}")
+
+      #following printing, open the file "highscore.data" and dump list into it, in binary.
+      with open(self.__HIGHSCOREFILE, "wb") as file:
+          pickle.dump(playerData, file)
+      #closeout
+      
 
     # genesis: bonus content starts here
     def initSnake(self):
@@ -359,3 +412,29 @@ class GameEngine:
 
         # Move snake to new spot
         self.__field[y_new][x_new] = self.__snake
+
+#Commented out, for future re-use
+
+#    def injectList(self): #creating function to inject list of veggies into basket. made to test gameOver function
+#      potato = Veggie("p", "potato", 5)
+#      onion = Veggie("o", "onion", 5)
+#      testCaptain = self.__captain = Captain(0,0)
+#
+#      for i in range(0,5):
+#        testCaptain.addVeggie(potato)
+#        self.__score += potato.getPoints()
+#        testCaptain.addVeggie(onion)
+#        self.__score += onion.getPoints()
+#
+#
+#        
+#
+##Eugene: Adding test main so I can run the game engine file directly, and test individual functions.
+#def main():
+#    #breakpoint()
+#    test = GameEngine()
+#    test.injectList()
+#    test.gameOver()
+#    test.highScore()
+#
+#main()
