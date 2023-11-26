@@ -59,7 +59,7 @@ class GameEngine:
 
                 # create new veggie object
                 # i.e. object = Veggie(symbol, name, point val)
-                veggie = Veggie(line[1], line[0], line[2])
+                veggie = Veggie(line[1], line[0], int(line[2]))
 
                 # append to list of vegetables
                 self.__vegetables.append(veggie)
@@ -243,14 +243,144 @@ class GameEngine:
                 self.__field[y_new][x_new] = self.__rabbitList[i]
                 self.__field[y_current][x_current] = None
 
-    def moveCptVertical(self):
-        return 1
+    def moveCptVertical(self, w_or_s):
 
-    def moveCptHorizontal(self):
-        return 1
+        # Get current position of Captain
+        x_current = self.__captain.getXCoord()
+        y_current = self.__captain.getYCoord()
+
+        # Determine whether Captain moves up or down based on function parameter w_or_s
+        if w_or_s == "w":
+            y_move = -1
+        else:
+            y_move = 1
+
+        # Determine potential new position of Captain after moving
+        x_new = x_current
+        y_new = y_current + y_move
+
+        # If the new position is empty, move the Captain there
+        if self.__field[y_new][x_new] is None:
+
+            # Set new xy-position of the Captain object
+            self.__captain.setXCoord(x_new)
+            self.__captain.setYCoord(y_new)
+
+            # Move Captain to new position in the field and set their previous location to None
+            self.__field[y_new][x_new] = self.__captain
+            self.__field[y_current][x_current] = None
+
+        # Else if the new position is a vegetable, move the Captain there and pick up the veggie
+        elif isinstance(self.__field[y_new][x_new], Veggie):
+
+            # Set new xy-position of the Captain object
+            self.__captain.setXCoord(x_new)
+            self.__captain.setYCoord(y_new)
+
+            # Output that a delicious veggie has been found
+            print(f"Yummy! A delicious {self.__field[y_new][x_new].getName()}")
+
+            # Add veggie to the Captain's basket
+            self.__captain.addVeggie(self.__field[y_new][x_new])
+
+            # Increment the score by the veggie's point value
+            self.__score += self.__field[y_new][x_new].getPoints()
+
+            # Move Captain to new position in the field and set their previous location to None
+            self.__field[y_new][x_new] = self.__captain
+            self.__field[y_current][x_current] = None
+
+        # Else there must be a rabbit at the new position, so warn against stepping on rabbits
+        else:
+            print("Don't step on the bunnies!")
+
+    def moveCptHorizontal(self, a_or_d):
+
+        # Get current position of Captain
+        x_current = self.__captain.getXCoord()
+        y_current = self.__captain.getYCoord()
+
+        # Determine whether Captain moves left or right based on function parameter a_or_d
+        if a_or_d == "d":
+            x_move = 1
+        else:
+            x_move = -1
+
+        # Determine potential new position of Captain after moving
+        x_new = x_current + x_move
+        y_new = y_current
+
+        # If the new position is empty, move the Captain there
+        if self.__field[y_new][x_new] is None:
+
+            # Set new xy-position of the Captain object
+            self.__captain.setXCoord(x_new)
+            self.__captain.setYCoord(y_new)
+
+            # Move Captain to new position in the field and set their previous location to None
+            self.__field[y_new][x_new] = self.__captain
+            self.__field[y_current][x_current] = None
+
+        # Else if the new position is a vegetable, move the Captain there and pick up the veggie
+        elif isinstance(self.__field[y_new][x_new], Veggie):
+
+            # Set new xy-position of the Captain object
+            self.__captain.setXCoord(x_new)
+            self.__captain.setYCoord(y_new)
+
+            # Output that a delicious veggie has been found
+            print(f"Yummy! A delicious {self.__field[y_new][x_new].getName()}")
+
+            # Add veggie to the Captain's basket
+            self.__captain.addVeggie(self.__field[y_new][x_new])
+
+            # Increment the score by the veggie's point value
+            self.__score += self.__field[y_new][x_new].getPoints()
+
+            # Move Captain to new position in the field and set their previous location to None
+            self.__field[y_new][x_new] = self.__captain
+            self.__field[y_current][x_current] = None
+
+        # Else there must be a rabbit at the new position, so warn against stepping on rabbits
+        else:
+            print("Don't step on the bunnies!")
 
     def moveCaptain(self):
-        return 1
+
+        # Have user input direction to move using WASD
+        movement = input("\nWould you like to move up (W), down (S), left (A), or right (D): ").lower()
+
+        # If user chooses up, check if there is room to move up and then move the Captain if there is
+        if movement == "w":
+            if self.__captain.getYCoord() == 0:
+                print("You can't move that way!")
+            else:
+                self.moveCptVertical("w")
+
+        # If user chooses down, check if there is room to move down and then move the Captain if there is
+        elif movement == "s":
+            if self.__captain.getYCoord() == len(self.__field) - 1:
+                print("You can't move that way!")
+            else:
+                self.moveCptVertical("s")
+
+        # If user chooses left, check if there is room to move left and then move the Captain if there is
+        elif movement == "a":
+            if self.__captain.getXCoord() == 0:
+                print("You can't move that way!")
+            else:
+                self.moveCptHorizontal("a")
+
+        # If user chooses right, check if there is room to move right and then move the Captain if there is
+        elif movement == "d":
+            if self.__captain.getXCoord() == len(self.__field[0]) - 1:
+                print("You can't move that way!")
+            else:
+                self.moveCptHorizontal("d")
+
+        # Else inform the user that they input an invalid direction
+        else:
+            print(f"{movement} is not a valid option.")
 
     def gameOver(self):
         #retrieve pointers
