@@ -256,6 +256,7 @@ class GameEngine:
         #retrieve pointers
         basket = self.__captain.getBasket() #retrieve the list containing vegetables captain picked up
         uniqueVeggies = self.__captain.getUniqueVeggies() #return set of names of unique vegetables picked up by Captain
+        sorted(uniqueVeggies)
 
         print("GAME OVER")
         print("Basket Contents:")
