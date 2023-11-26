@@ -9,15 +9,32 @@ def main():
   game = GameEngine()
   game.initializeGame()
   game.intro()
-  #TODO: handle remaining Veggies changes, Captain, and Rabbit movement while reprinting field. Maybe a while loop?
 
-  choice = "Y"
-  while choice != "N":
-    # genesis: using print field for testing - feel free to grab and change as needed
+  # Variable to store the number of remaining vegetables in the game
+  veggies_left = game.remainingVeggies()
+
+  while veggies_left != 0:
+    # Output the number of remaining veggies and the player's score
+    print(f"\n{veggies_left} veggies remaining. Current score: {game.getScore()}")
+
+    # Print out the field
     game.printField()
-    choice = (input("\nContinue? Y/N - "))
 
+    # Move the rabbits
+    game.moveCaptain()
+
+    game.moveRabbits()
+
+    # Move the snake
+    game.moveSnake()
+
+    # Determine the new number of remaining veggies
+    veggies_left = game.remainingVeggies()
+
+  # Display the Game Over information
   # game.gameOver()
+
+  # Handle the High Score function
   # game.highScore()
 
 

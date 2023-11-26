@@ -12,4 +12,11 @@ class Captain(Creature):
   def addVeggie(self, veg): #veg is to be a Veggie-class object. adds vegetable object to list of collected vegetables.
     self.__basket.append(veg)
 
-  #TODO: Need to test: are all appropriate getter/setter functions inherited already? Should be, but unsure.
+  def removeVeggie(self, num):
+    # BONUS: removeVeggie function for Snake feature (steals Captain's veggies)
+    # "num": the number of veggies to remove from Captain's basket
+    for i in range(num):
+      # If the basket is not empty
+      if self.__basket:
+        # Remove veggie
+        self.__basket.pop()
