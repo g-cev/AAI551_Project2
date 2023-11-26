@@ -347,7 +347,7 @@ class GameEngine:
     def moveCaptain(self):
 
         # Have user input direction to move using WASD
-        movement = input("Would you like to move up (W), down (S), left (A), or right (D): ").lower()
+        movement = input("\nWould you like to move up (W), down (S), left (A), or right (D): ").lower()
 
         # If user chooses up, check if there is room to move up and then move the Captain if there is
         if movement == "w":
