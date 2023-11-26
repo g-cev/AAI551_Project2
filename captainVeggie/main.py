@@ -21,10 +21,9 @@ def main():
     game.printField()
 
     # Move the rabbits
-    game.moveRabbits()
+    game.moveCaptain()
 
-    # Move the captain
-    # game.moveCaptain()
+    game.moveRabbits()
 
     # Move the snake
     game.moveSnake()
