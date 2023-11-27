@@ -32,10 +32,10 @@ def main():
     veggies_left = game.remainingVeggies()
 
   # Display the Game Over information
-  # game.gameOver()
+  game.gameOver()
 
   # Handle the High Score function
-  # game.highScore()
+  game.highScore()
 
 
 main()

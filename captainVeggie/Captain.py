@@ -4,6 +4,7 @@ from Creature import Creature
 #Date: 11/18/2023
 #Desc: Class file for 'Captain' class. Inherits FieldInhabitant class (superClass/parent). Will not be inherited by any other class.
 
+
 class Captain(Creature):
   def __init__(self, xCoord, yCoord):
     Creature.__init__(self, "V", xCoord, yCoord)
@@ -21,16 +22,22 @@ class Captain(Creature):
     uniqueVeggies = set()
     #for every single vegetable in cap's basket
     for veg in self.__basket:
-      #add veg to set. repeates will not be added.
+      #add veg to set. repeats will not be added.
       uniqueVeggies.add(veg)
 
     return uniqueVeggies
 
   def removeVeggie(self, num):
     # BONUS: removeVeggie function for Snake feature (steals Captain's veggies)
-    # "num": the number of veggies to remove from Captain's basket
+    removed_count = 0
+    points_lost = 0
+
     for i in range(num):
       # If the basket is not empty
       if self.__basket:
         # Remove veggie
-        self.__basket.pop()
+        removed_count += 1
+        points_lost += self.__basket[-1].getPoints()
+        self.__basket.pop(-1)
+
+    return removed_count, points_lost
