@@ -412,7 +412,7 @@ class GameEngine:
           #return set of names of unique vegetables picked up by Captain, then sort them.
           uniqueVeggies = sorted(self.__captain.getUniqueVeggies(), key = keyFunc) 
 
-          #TODO:  QOL: figure out how to update scores of initials already present on scoreboard.
+          #TODO: Eugene: QOL: figure out how to update scores of initials already present on scoreboard.
           #for every unique vegetable picked up by the player
           for veg in uniqueVeggies:
               #print out the name, point value, quantity, and total points earned from that veggie
