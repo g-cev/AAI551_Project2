@@ -15,7 +15,8 @@ def main():
 
   while veggies_left != 0:
     # Output the number of remaining veggies and the player's score
-    print(f"\n{veggies_left} veggies remaining. Current score: {game.getScore()}")
+    veggiesCollected = game.getBasketVeggieCount()
+    print(f"\n{veggies_left} veggies remaining. {veggiesCollected} veggie(s) collected. Current score: {game.getScore()}")
 
     # Print out the field
     game.printField()

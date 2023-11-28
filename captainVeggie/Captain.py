@@ -13,9 +13,20 @@ class Captain(Creature):
   def addVeggie(self, veg): #veg is to be a Veggie-class object. adds vegetable object to list of collected vegetables.
     self.__basket.append(veg)
 
+  #returns bool. asks if basket is empty or not (True = not empty, False = empty)
+  def checkBasket(self):
+    if not self.__basket:
+      return False
+    else:
+      return True
+
   #returns basket list
   def getBasket(self):
     return self.__basket
+  
+  #returns the length of basket list to find total number of veggies collected
+  def getBasketVeggieCount(self):
+    return len(self.__basket)
   
   #returns set of unique vegetables collected by captain. will be used in gameOver function.
   def getUniqueVeggies(self):

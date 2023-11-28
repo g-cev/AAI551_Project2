@@ -40,6 +40,9 @@ class GameEngine:
 
         # Bonus: Snake
         self.__snake = None
+    
+    def getBasketVeggieCount(self):
+        return self.__captain.getBasketVeggieCount()
 
     def initVeggies(self):
         fileName = ""
@@ -394,18 +397,30 @@ class GameEngine:
             print(f"{movement} is not a valid option.")
 
     def gameOver(self):
-        #retrieve pointers
-        basket = self.__captain.getBasket() #retrieve the list containing vegetables captain picked up
-        uniqueVeggies = self.__captain.getUniqueVeggies() #return set of names of unique vegetables picked up by Captain
-        # sorted(uniqueVeggies)
-
+        
+        def keyFunc(veg): #key function for sorting set: key is to sort by veggie name, in alphabetical order.
+            return veg.getName()
+        
         print(f"\n{self.RED}GAME OVER{self.RESET}")
         print("Basket Contents:")
 
-        #for every unique vegetable picked up by the player
-        for veg in uniqueVeggies:
-            #print out the name, point value, quantity, and total points earned from that veggie
-            print(f"{veg} (x{basket.count(veg)}) = {veg.getPoints() * basket.count(veg)} pts") #Sample output: Potato, 5 points (x5) = 25 pts
+        #if basket IS NOT empty
+        if self.__captain.checkBasket():
+          #retrieve pointers
+          #retrieve the list containing vegetables captain picked up
+          basket = self.__captain.getBasket() 
+          #return set of names of unique vegetables picked up by Captain, then sort them.
+          uniqueVeggies = sorted(self.__captain.getUniqueVeggies(), key = keyFunc) 
+
+          #for every unique vegetable picked up by the player
+          for veg in uniqueVeggies:
+              #print out the name, point value, quantity, and total points earned from that veggie
+              #Sample output: Potato, 5 points (x5) = 25 pts
+              print(f"{veg} (x{basket.count(veg)}) = {veg.getPoints() * basket.count(veg)} pts") 
+              
+        #if basket IS empty      
+        else: 
+          print("Your basket is empty.")
         
         #printing final score
         print(f"{self.BLUE}Final score: {self.__score}{self.RESET}")
@@ -432,6 +447,8 @@ class GameEngine:
       #reading in user initials, and then retrieving the first 3 letters.
       userInitials = input("\nPlease input three letters for your initials: ")
       userInitials = userInitials[:3].upper() #slicing in only first 3 characters of user input, in case they get funny. 
+
+
 
       #appending a tuple the list of scores
       playerData.append(tuple((userInitials, self.__score)))
@@ -564,7 +581,11 @@ class GameEngine:
             self.__score -= points_lost
 
             # Output snake message
-            print(f"Oh no! The snake ate {count} veggie(s) from the basket...you lost {points_lost} points!")
+            if self.__captain.checkBasket():
+                print(f"Oh no! The snake ate {count} veggie(s) from the basket...you lost {points_lost} points!")
+            else:
+                print("Oh no, the snake got you! Your basket is empty, you lost no points.") 
+            
 
             # Randomize new snake coordinates after trying to touch Captain
             x_new = random.randrange(0, len(self.__field[0]))
