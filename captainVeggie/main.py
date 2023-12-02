@@ -15,16 +15,16 @@ def main():
 
   while veggies_left != 0:
     # Output the number of remaining veggies and the player's score
-    veggiesCollected = game.getBasketVeggieCount()
-    print(f"\n{veggies_left} veggies remaining. {veggiesCollected} veggie(s) collected. Current score: {game.getScore()}")
+    print(f"\n{veggies_left} veggies remaining. Current score: {game.getScore()}.", end=" ")
 
     # Print out the field
     game.printField()
 
     # Move the rabbits
-    game.moveCaptain()
-
     game.moveRabbits()
+
+    # Move the captain
+    game.moveCaptain()
 
     # Move the snake
     game.moveSnake()

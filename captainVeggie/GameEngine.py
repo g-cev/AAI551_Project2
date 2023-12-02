@@ -40,15 +40,16 @@ class GameEngine:
 
         # Bonus: Snake
         self.__snake = None
-    
-    def getBasketVeggieCount(self):
-        return self.__captain.getBasketVeggieCount()
+
+    # commenting out
+    # def getBasketVeggieCount(self):
+    #     return self.__captain.getBasketVeggieCount()
 
     def initVeggies(self):
-        fileName = ""
+        fileName = input("Please input the name of the Veggie file you would like to use: ")
 
         while not os.path.exists(fileName):
-            fileName = input("Please input the name of the Veggie file you would like to use: ")
+            fileName = input("Invalid filename. Please input the name of the Veggie file you would like to use: ")
 
         with open(fileName, 'r') as file:
             line = file.readline()
@@ -173,13 +174,16 @@ class GameEngine:
         for veggie in self.__vegetables:
             print(veggie)
 
-        print(f"\nCaptain Veggie is {self.BLUE}{self.__captain.getSymbol()}{self.RESET}, the snake is {self.RED}{self.__snake.getSymbol()}{self.RESET}, ", end="")
-        print(f"and the rabbits are {self.YELLOW}{self.__rabbitList[0].getSymbol()}{self.RESET}'s.")
+        print(f"\nCaptain Veggie is {self.BLUE}{self.__captain}{self.RESET}, the snake is {self.RED}{self.__snake}{self.RESET}, ", end="")
+        print(f"and the rabbits are {self.YELLOW}{self.__rabbitList[0]}{self.RESET}'s.")
 
         print("\nGood luck!")
         # TODO: create other appropriate descriptions
 
     def printField(self):
+
+        print(f"{len(self.__captain.getBasket())} veggie(s) in basket!")
+
         # Top border
         width = len(self.__field[0]) * 3 + 2
         for i in range(width):
@@ -305,7 +309,7 @@ class GameEngine:
             self.__field[y_current][x_current] = None
 
         # Else there must be a rabbit at the new position, so warn against stepping on rabbits
-        else:
+        elif isinstance(self.__field[y_new][x_new], Rabbit):
             print("Don't step on the bunnies!")
 
     def moveCptHorizontal(self, a_or_d):
@@ -356,7 +360,7 @@ class GameEngine:
             self.__field[y_current][x_current] = None
 
         # Else there must be a rabbit at the new position, so warn against stepping on rabbits
-        else:
+        elif isinstance(self.__field[y_new][x_new], Rabbit):
             print("Don't step on the bunnies!")
 
     def moveCaptain(self):
@@ -447,9 +451,7 @@ class GameEngine:
 
       #reading in user initials, and then retrieving the first 3 letters.
       userInitials = input("\nPlease input three letters for your initials: ")
-      userInitials = userInitials[:3].upper() #slicing in only first 3 characters of user input, in case they get funny. 
-
-
+      userInitials = userInitials[:3].upper() #slicing in only first 3 characters of user input, in case they get funny.
 
       #appending a tuple the list of scores
       playerData.append(tuple((userInitials, self.__score)))
@@ -577,16 +579,23 @@ class GameEngine:
 
         # If the snake touches the captain
         if isinstance(self.__field[y_new][x_new], Captain):
-            # Pop 5 veggies out of Captain's basket
-            count, points_lost = self.__captain.removeVeggie(5)
-            self.__score -= points_lost
 
             # Output snake message
-            if self.__captain.checkBasket():
+            # if self.__captain.checkBasket():
+            # if self.__captain.getBasketVeggieCount()
+            if len(self.__captain.getBasket()) >= 5:
+                count, points_lost = self.__captain.removeVeggie(5)
+                print(f"Oh no! The snake ate {count} veggie(s) from the basket...you lost {points_lost} points!")
+            elif len(self.__captain.getBasket()) > 0:
+                count, points_lost = self.__captain.removeVeggie(len(self.__captain.getBasket()))
                 print(f"Oh no! The snake ate {count} veggie(s) from the basket...you lost {points_lost} points!")
             else:
-                print("Oh no, the snake got you! Your basket is empty, you lost no points.") 
-            
+                points_lost = 0
+                print("Oh no, the snake got you! Your basket is empty, you lost no points.")
+
+            # Pop 5 veggies out of Captain's basket
+            # count, points_lost = self.__captain.removeVeggie(5)
+            self.__score -= points_lost
 
             # Randomize new snake coordinates after trying to touch Captain
             x_new = random.randrange(0, len(self.__field[0]))

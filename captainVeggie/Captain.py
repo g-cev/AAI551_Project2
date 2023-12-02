@@ -23,10 +23,11 @@ class Captain(Creature):
   #returns basket list
   def getBasket(self):
     return self.__basket
-  
+
+  # commenting out
   #returns the length of basket list to find total number of veggies collected
-  def getBasketVeggieCount(self):
-    return len(self.__basket)
+  # def getBasketVeggieCount(self):
+  #   return len(self.__basket)
   
   #returns set of unique vegetables collected by captain. will be used in gameOver function.
   def getUniqueVeggies(self):
