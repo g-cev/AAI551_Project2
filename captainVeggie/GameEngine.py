@@ -87,6 +87,10 @@ class GameEngine:
                 self.__field[y][x] = self.__vegetables[randVeggie]
 
     def initCaptain(self):
+        """
+        Instantiates a Captain object at a random empty position in the field.
+        Primarily written by Aleese.
+        """
 
         # Generate a random xy-position within field bounds
         x_pos = random.randrange(0, len(self.__field[0]))
@@ -108,6 +112,10 @@ class GameEngine:
         self.__field[y_pos][x_pos] = cap
 
     def initRabbits(self):
+        """
+        Instantiates a given number of Rabbit objects at random empty positions in the field.
+        Primarily written by Aleese.
+        """
 
         # For each rabbit...
         for i in range(self.__NUMBEROFRABBITS):
@@ -211,6 +219,11 @@ class GameEngine:
         return self.__score
 
     def moveRabbits(self):
+        """
+        Moves each rabbit up to 1 space in a random direction. Rabbit will forfeit its move if it tries to move out of
+        bounds or on top of another Creature.
+        Primarily written by Aleese.
+        """
 
         # For each rabbit...
         for i in range(self.__NUMBEROFRABBITS):
@@ -230,11 +243,10 @@ class GameEngine:
             y_new = y_current + y_move
 
             # If the new position is out of bounds, forfeit the movement
-            # TODO: Check this condition actually works as intended
             if x_new < 0 or y_new < 0 or x_new >= len(self.__field[0]) or y_new >= len(self.__field):
                 continue
 
-            # Else if the new position is another rabbit or the Captain, forfeit the movement
+            # Else if the new position is another rabbit, the Captain, or the snake, forfeit the movement
             elif isinstance(self.__field[y_new][x_new], Creature):
                 continue
 
@@ -250,6 +262,13 @@ class GameEngine:
                 self.__field[y_current][x_current] = None
 
     def moveCptVertical(self, w_or_s):
+        """
+        Moves the Captain up or down depending on parameter w_or_s. Captain picks up veggies they may encounter.
+        Captain forfeits their move if they try to move on top of a rabbit.
+        Primarily written by Aleese.
+        :param w_or_s: Represents user's input "w" or "s" (up or down, respectively)
+        :type w_or_s: str
+        """
 
         # Get current position of Captain
         x_current = self.__captain.getXCoord()
@@ -301,6 +320,13 @@ class GameEngine:
             print("Don't step on the bunnies!")
 
     def moveCptHorizontal(self, a_or_d):
+        """
+        Moves the Captain left or right depending on parameter a_or_d. Captain picks up veggies they may encounter.
+        Captain forfeits their move if they try to move on top of a rabbit.
+        Primarily written by Aleese.
+        :param a_or_d: Represents user's input "a" or "d" (left or right, respectively)
+        :type a_or_d: str
+        """
 
         # Get current position of Captain
         x_current = self.__captain.getXCoord()
@@ -352,6 +378,12 @@ class GameEngine:
             print("Don't step on the bunnies!")
 
     def moveCaptain(self):
+        """
+        Prompts user to move the Captain using WASD. If the movement does not put the Captain outside the field,
+        moveCptVertical() and moveCptHorizontal() are called appropriately. Captain forfeits their move if they try to
+        move out of bounds.
+        Primarily written by Aleese.
+        """
 
         # Have user input direction to move using WASD
         movement = input("\nWould you like to move up (W), down (S), left (A), or right (D): ").lower()
