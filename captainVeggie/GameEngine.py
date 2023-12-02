@@ -4,7 +4,7 @@ import pickle
 from Captain import Captain
 from Rabbit import Rabbit
 from Veggie import Veggie
-from FieldInhabitant import FieldInhabitant
+
 from Creature import Creature
 from Snake import Snake
 
@@ -24,6 +24,13 @@ class GameEngine:
     __NUMBEROFRABBITS = 5
     __HIGHSCOREFILE = "highscore.data"
 
+    # Colors for output
+    RED = '\033[91m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    BLUE = '\033[94m'
+    RESET = '\033[0m'
+
     def __init__(self):
         self.__field = []
         self.__rabbitList = []
@@ -33,6 +40,9 @@ class GameEngine:
 
         # Bonus: Snake
         self.__snake = None
+    
+    def getBasketVeggieCount(self):
+        return self.__captain.getBasketVeggieCount()
 
     def initVeggies(self):
         fileName = ""
@@ -47,44 +57,43 @@ class GameEngine:
             row = int(line[1])
             col = int(line[2])
 
-            # initialize the 2D list "field"
-            # debug: switching around col and row
+            # Initialize the 2D list "field"
             self.__field = [[None for _ in range(col)] for _ in range(row)]
 
-            # for each row in file, create veggie object and append to list
+            # For each row in file, create veggie object and append to list
             for line in file:
                 # strip row of newline char
                 line = line.strip("\n")
                 line = line.split(",")
 
-                # create new veggie object
+                # Create new veggie object
                 # i.e. object = Veggie(symbol, name, point val)
                 veggie = Veggie(line[1], line[0], int(line[2]))
 
-                # append to list of vegetables
+                # Append to list of vegetables
                 self.__vegetables.append(veggie)
 
-        # set to hold "occupied" veggie spaces
+        # Set to hold "occupied" veggie spaces
         occupied = set()
-        # seed random -- have been using 3
         random.seed(3)
+
         while len(occupied) < self.__NUMBEROFVEGGIES:
-            # generate a random xy position within field bounds
+            # Generate a random xy position within field bounds
             xPos = random.randrange(0, col)
             yPos = random.randrange(0, row)
             veggiePos = (xPos, yPos)
 
-            # if this position is NOT occupied, add to set
+            # If this position is NOT occupied, add to set
             if veggiePos not in occupied:
                 occupied.add(veggiePos)
 
-        # with set of positions, populate "field" list
+        # With set of positions, populate "field" list
         for pos in occupied:
             x, y = pos
             if x < col and y < row:
-                # pick a random vegetable from vegetables list
+                # Pick a random vegetable from vegetables list
                 randVeggie = random.randrange(len(self.__vegetables))
-                # populate that coord with veggie object
+                # Populate that coord with veggie object
                 self.__field[y][x] = self.__vegetables[randVeggie]
 
     def initCaptain(self):
@@ -139,7 +148,7 @@ class GameEngine:
         self.initSnake()
 
     def remainingVeggies(self):
-        # examines the field and returns the number of veggies left
+        # Examine the field and returns the number of veggies left
         veggie_count = 0
 
         # As we go through the field
@@ -154,24 +163,23 @@ class GameEngine:
 
     def intro(self):
         print("Welcome to Captain Veggie!")
-
         print("The rabbits have invaded your garden and you must harvest")
         print("as many vegetables as possible before rabbits eat them")
         print("all! Each vegetable is worth a different number of points")
         print("so go for the high score!")
+        print("BONUS: Avoid the snake, or else it'll steal your veggies!")
 
         print("\nThe vegetables are: ")
         for veggie in self.__vegetables:
             print(veggie)
 
-        print(
-            f"\nCaptain Veggie is {self.__captain.getSymbol()}, and the rabbits are {self.__rabbitList[0].getSymbol()}'s.")
+        print(f"\nCaptain Veggie is {self.BLUE}{self.__captain.getSymbol()}{self.RESET}, the snake is {self.RED}{self.__snake.getSymbol()}{self.RESET}, ", end="")
+        print(f"and the rabbits are {self.YELLOW}{self.__rabbitList[0].getSymbol()}{self.RESET}'s.")
 
         print("\nGood luck!")
         # TODO: create other appropriate descriptions
 
     def printField(self):
-
         # Top border
         width = len(self.__field[0]) * 3 + 2
         for i in range(width):
@@ -185,9 +193,15 @@ class GameEngine:
 
             for h in range(len(self.__field[i])):
 
-                # If there is any FieldInhabitant at the current position, print its symbol
-                if isinstance(self.__field[i][h], FieldInhabitant):
-                    print(format(self.__field[i][h].getSymbol(), '^3s'), end="")
+                # Print color-coded symbols
+                if isinstance(self.__field[i][h], Captain):
+                    print(f"{self.BLUE}{format(self.__field[i][h].getSymbol(), '^3s')}{self.RESET}", end="")
+                elif isinstance(self.__field[i][h], Rabbit):
+                    print(f"{self.YELLOW}{format(self.__field[i][h].getSymbol(), '^3s')}{self.RESET}", end="")
+                elif isinstance(self.__field[i][h], Veggie):
+                    print(f"{self.GREEN}{format(self.__field[i][h].getSymbol(), '^3s')}{self.RESET}", end="")
+                elif isinstance(self.__field[i][h], Snake):
+                    print(f"{self.RED}{format(self.__field[i][h].getSymbol(), '^3s')}{self.RESET}", end="")
 
                 # Else do not print anything
                 elif self.__field[i][h] is None:
@@ -383,30 +397,39 @@ class GameEngine:
             print(f"{movement} is not a valid option.")
 
     def gameOver(self):
-        #retrieve pointers
-        basket = self.__captain.getBasket() #retrieve the list containing vegetables captain picked up
-        uniqueVeggies = self.__captain.getUniqueVeggies() #return set of names of unique vegetables picked up by Captain
-        sorted(uniqueVeggies)
-
-        print("GAME OVER")
+        
+        def keyFunc(veg): #key function for sorting set: key is to sort by veggie name, in alphabetical order.
+            return veg.getName()
+        
+        print(f"\n{self.RED}GAME OVER{self.RESET}")
         print("Basket Contents:")
 
-        #for every unique vegetable picked up by the player
-        for veg in uniqueVeggies:
-            #print out the name, point value, quantity, and total points earned from that veggie
-            print(f"{veg} (x{basket.count(veg)}) = {veg.getPoints() * basket.count(veg)} pts") #Sample output: Potato, 5 points (x5) = 25 pts
+        #if basket IS NOT empty
+        if self.__captain.checkBasket():
+          #retrieve pointers
+          #retrieve the list containing vegetables captain picked up
+          basket = self.__captain.getBasket() 
+          #return set of names of unique vegetables picked up by Captain, then sort them.
+          uniqueVeggies = sorted(self.__captain.getUniqueVeggies(), key = keyFunc) 
+
+          #TODO: Eugene: QOL: figure out how to update scores of initials already present on scoreboard.
+          #for every unique vegetable picked up by the player
+          for veg in uniqueVeggies:
+              #print out the name, point value, quantity, and total points earned from that veggie
+              #Sample output: Potato, 5 points (x5) = 25 pts
+              print(f"{veg} (x{basket.count(veg)}) = {veg.getPoints() * basket.count(veg)} pts") 
+
+        #if basket IS empty      
+        else: 
+          print("Your basket is empty.")
         
         #printing final score
-        print(f"Final score: {self.__score}")
-        #deleting new objects, so that they're not just hanging around. Not sure if it nukes object or pointer to object
-        #del uniqueVeggies
-        #del basket    
-        #commenting out bc unsure if data leakge would be a problem or not.
+        print(f"{self.BLUE}Final score: {self.__score}{self.RESET}")
     
     def highScore(self):
       
       #"Key Function" used for sorting list. Given that the list is loaded back as 
-      #a list of tuple pairs (name, highscore), i had to define a "Key Function" for
+      #a list of tuple pairs (name, highscore), I had to define a "Key Function" for
       #the .sort() function "key" parameter so that it would sort descending by high score,
       #not by alphabetical order.
       #Had to define within highScore function, as it would not recognize outside of it.
@@ -423,12 +446,14 @@ class GameEngine:
           playerData = pickle.load(file)
 
       #reading in user initials, and then retrieving the first 3 letters.
-      userInitials = input("Please input three letters for your initials: ")
+      userInitials = input("\nPlease input three letters for your initials: ")
       userInitials = userInitials[:3].upper() #slicing in only first 3 characters of user input, in case they get funny. 
+
+
 
       #appending a tuple the list of scores
       playerData.append(tuple((userInitials, self.__score)))
-      #sorting the data based on score. Sorted descensding.
+      #sorting the data based on score. Sorted descending.
       playerData.sort(key = keyFunc, reverse = True)
 
       print("Name | Score")
@@ -440,9 +465,7 @@ class GameEngine:
       with open(self.__HIGHSCOREFILE, "wb") as file:
           pickle.dump(playerData, file)
       #closeout
-      
 
-    # genesis: bonus content starts here
     def initSnake(self):
         # Randomize coordinates
         xPos = random.randrange(0, len(self.__field[0]))
@@ -462,6 +485,15 @@ class GameEngine:
         # Place snake in field
         self.__field[yPos][xPos] = snake
 
+    def nextMoveNotOk(self, xCoord, yCoord):
+        outOfBounds = False
+        obstacleExists = False
+        if xCoord < 0 or yCoord < 0 or xCoord >= len(self.__field[0]) or yCoord >= len(self.__field):
+            outOfBounds = True
+        if outOfBounds or (self.__field[yCoord][xCoord] is not None and not isinstance(self.__field[yCoord][xCoord], Captain)):
+            obstacleExists = True
+        return obstacleExists
+
     def moveSnake(self):
         # TODO: Mostly done, just need a better way to go around obstacles cause right now it just stops
         # Get current position of snake
@@ -477,55 +509,84 @@ class GameEngine:
         y_new = snake_y
 
         # Determine new position snake should move to
-        if snake_x < captain_x:
-            # If captain is to the right, move to the right
-            x_new = snake_x + 1
-        elif snake_x > captain_x:
-            # If captain is to the left, move to the left
-            x_new = snake_x - 1
-        elif snake_y < captain_y:
-            # If captain is north, move up
-            y_new = snake_y + 1
-        elif snake_y > captain_y:
-            # If captain is south, move down
-            y_new = snake_y - 1
+        x_difference = snake_x - captain_x
+        if x_difference < 0:
+            # If snake's x is less than captain's, move right
+            x_direction = 1
+        elif x_difference > 0:
+            # If snake's x is more than captain's, move left
+            x_direction = -1
         else:
-            # Leave it as is
-            y_new = snake_y
-            x_new = snake_x
+            # Stay the same
+            x_direction = 0
 
-        # Check if out of bounds
-        if x_new < 0 or y_new < 0 or x_new >= len(self.__field[0]) or y_new >= len(self.__field):
-            return
+        y_difference = snake_y - captain_y
+        if y_difference < 0:
+            # If snake's y is less than captain's, move up
+            y_direction = 1
+        elif y_difference > 0:
+            # If snake's y is more than captain's, move down
+            y_direction = -1
+        else:
+            # Stay the same
+            y_direction = 0
 
-        # Check if there is an obstacle at the new position
-        if isinstance(self.__field[y_new][x_new], Veggie) or isinstance(self.__field[y_new][x_new], Rabbit):
-            # Determine if the snake should move horizontally or vertically to bypass the obstacle
-            if x_new != snake_x and y_new != snake_y:
-                # Prioritize horizontal movement over vertical
-                if snake_x < captain_x:
-                    x_new = snake_x + 1
-                else:
-                    x_new = snake_x - 1
-                y_new = snake_y  # Stay in the same row
-            else:
-                # Stay in the same column if moving horizontally, or vice versa
-                if x_new == snake_x:
-                    x_new = snake_x
-                if y_new == snake_y:
+        # Move left/right
+        if x_direction != 0:
+            x_new += x_direction
+            if y_direction == 0:
+                # We always want to move in the y direction if x is blocked
+                y_direction = -1
+            if self.nextMoveNotOk(x_new, y_new):
+                x_new = snake_x
+                y_new += y_direction
+                if self.nextMoveNotOk(x_new, y_new):
+                    # Something in the way again, not possible to move closer to captain
                     y_new = snake_y
+                    # Move opposite direction of original
+                    x_new -= x_direction
+                    if self.nextMoveNotOk(x_new, y_new):
+                        # Something blocking us yet again :/
+                        x_new = snake_x
+                        y_new -= y_direction
+                        if self.nextMoveNotOk(x_new, y_new):
+                            # Blocked on all directions, don't move
+                            y_new = snake_y
+        # Move up/down
+        elif y_direction != 0:
+            y_new += y_direction
+            if x_direction == 0:
+                # We always want to move in the x direction if y is blocked
+                x_direction = -1
+            if self.nextMoveNotOk(x_new, y_new):
+                # Revert back to original, something in the way
+                y_new = snake_y
+                x_new += x_direction
+                if self.nextMoveNotOk(x_new, y_new):
+                    # Something in the way again, not possible to move closer to captain
+                    x_new = snake_x
+                    # Move opposite direction of original
+                    y_new -= y_direction
+                    if self.nextMoveNotOk(x_new, y_new):
+                        # Something blocking us yet again
+                        y_new = snake_y
+                        x_new -= x_direction
+                        if self.nextMoveNotOk(x_new, y_new):
+                            # Blocked on all directions, don't move
+                            x_new = snake_x
 
-            # Check if new position is out of bounds
-            if x_new < 0 or y_new < 0 or x_new >= len(self.__field[0]) or y_new >= len(self.__field):
-                return
-
-            # Check if new position is an inhabitant other than captain
-            if isinstance(self.__field[y_new][x_new], Veggie) or isinstance(self.__field[y_new][x_new], Rabbit):
-                return
-
-        elif isinstance(self.__field[y_new][x_new], Captain):
+        # If the snake touches the captain
+        if isinstance(self.__field[y_new][x_new], Captain):
             # Pop 5 veggies out of Captain's basket
-            self.__captain.removeVeggie(5)
+            count, points_lost = self.__captain.removeVeggie(5)
+            self.__score -= points_lost
+
+            # Output snake message
+            if self.__captain.checkBasket():
+                print(f"Oh no! The snake ate {count} veggie(s) from the basket...you lost {points_lost} points!")
+            else:
+                print("Oh no, the snake got you! Your basket is empty, you lost no points.") 
+            
 
             # Randomize new snake coordinates after trying to touch Captain
             x_new = random.randrange(0, len(self.__field[0]))
@@ -560,7 +621,7 @@ class GameEngine:
 #
 #        
 #
-##Eugene: Adding test main so I can run the game engine file directly, and test individual functions.
+##Eugene: Adding test main, so I can run the game engine file directly, and test individual functions.
 #def main():
 #    #breakpoint()
 #    test = GameEngine()
