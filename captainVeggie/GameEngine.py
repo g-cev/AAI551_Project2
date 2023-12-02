@@ -1,23 +1,16 @@
+# Name: Genesis Cevallos, Eugene Kozlakov, Aleese Mukhamedjanova
+# Date: 12/8/2023
+# Desc: Class file for 'GameEngine' class. This will contain initialization and running functions for the actual
+# "Captain Veggie" game. Will be called in main.py
+
 import os
 import random
 import pickle
+from Creature import Creature
 from Captain import Captain
 from Rabbit import Rabbit
-from Veggie import Veggie
-
-from Creature import Creature
 from Snake import Snake
-
-
-# Aleese: I added this import statement because I edited printField() to just check if the current position has a
-# FieldInhabitant rather than individually checking if it has a rabbit, captain, veg. However, Python would not
-# recognize FieldInhabitant without importing it -- unsure why. I feel there should be a way to check this w/o importing.
-
-
-# Name: Genesis Cevallos, Eugene Kozlakov, Aleese Mukhamedjanova
-# Date: 11/18/2023
-# Desc: Class file for 'GameEngine' class. This will contain initialization and running functions for the actual "Captain Veggie" game. Will be called in main.py
-
+from Veggie import Veggie
 
 class GameEngine:
     __NUMBEROFVEGGIES = 30
@@ -41,10 +34,6 @@ class GameEngine:
         # Bonus: Snake
         self.__snake = None
 
-    # commenting out
-    # def getBasketVeggieCount(self):
-    #     return self.__captain.getBasketVeggieCount()
-
     def initVeggies(self):
         fileName = input("Please input the name of the Veggie file you would like to use: ")
 
@@ -63,7 +52,7 @@ class GameEngine:
 
             # For each row in file, create veggie object and append to list
             for line in file:
-                # strip row of newline char
+                # Strip row of newline char
                 line = line.strip("\n")
                 line = line.split(",")
 
@@ -178,7 +167,6 @@ class GameEngine:
         print(f"and the rabbits are {self.YELLOW}{self.__rabbitList[0]}{self.RESET}'s.")
 
         print("\nGood luck!")
-        # TODO: create other appropriate descriptions
 
     def printField(self):
 
@@ -219,7 +207,7 @@ class GameEngine:
             print("#", end="")
 
     def getScore(self):
-        # return score
+        # Return score
         return self.__score
 
     def moveRabbits(self):
@@ -308,7 +296,7 @@ class GameEngine:
             self.__field[y_new][x_new] = self.__captain
             self.__field[y_current][x_current] = None
 
-        # Else there must be a rabbit at the new position, so warn against stepping on rabbits
+        # Else if there is a rabbit at the new position, warn against stepping on rabbits
         elif isinstance(self.__field[y_new][x_new], Rabbit):
             print("Don't step on the bunnies!")
 
@@ -359,7 +347,7 @@ class GameEngine:
             self.__field[y_new][x_new] = self.__captain
             self.__field[y_current][x_current] = None
 
-        # Else there must be a rabbit at the new position, so warn against stepping on rabbits
+        # Else if there is a rabbit at the new position, warn against stepping on rabbits
         elif isinstance(self.__field[y_new][x_new], Rabbit):
             print("Don't step on the bunnies!")
 
@@ -402,73 +390,76 @@ class GameEngine:
 
     def gameOver(self):
         
-        def keyFunc(veg): #key function for sorting set: key is to sort by veggie name, in alphabetical order.
+        def keyFunc(veg):   # Key function for sorting set: key is to sort by veggie name, in alphabetical order
             return veg.getName()
         
         print(f"\n{self.RED}GAME OVER{self.RESET}")
         print("Basket Contents:")
 
-        #if basket IS NOT empty
+        # If basket IS NOT empty
         if self.__captain.checkBasket():
-          #retrieve pointers
-          #retrieve the list containing vegetables captain picked up
+          # Retrieve pointers
+          # Retrieve the list containing vegetables captain picked up
           basket = self.__captain.getBasket() 
-          #return set of names of unique vegetables picked up by Captain, then sort them.
+          # Return set of names of unique vegetables picked up by Captain, then sort them
           uniqueVeggies = sorted(self.__captain.getUniqueVeggies(), key = keyFunc) 
 
-          #TODO: Eugene: QOL: figure out how to update scores of initials already present on scoreboard.
-          #for every unique vegetable picked up by the player
+          # TODO: Eugene: QOL: figure out how to update scores of initials already present on scoreboard.
+
+          # For every unique vegetable picked up by the player
           for veg in uniqueVeggies:
-              #print out the name, point value, quantity, and total points earned from that veggie
-              #Sample output: Potato, 5 points (x5) = 25 pts
+              # Print out the name, point value, quantity, and total points earned from that veggie
+              # Sample output: Potato, 5 points (x5) = 25 pts
               print(f"{veg} (x{basket.count(veg)}) = {veg.getPoints() * basket.count(veg)} pts") 
 
-        #if basket IS empty      
+        # If basket IS empty
         else: 
           print("Your basket is empty.")
         
-        #printing final score
+        # Printing final score
         print(f"{self.BLUE}Final score: {self.__score}{self.RESET}")
     
     def highScore(self):
       
-      #"Key Function" used for sorting list. Given that the list is loaded back as 
-      #a list of tuple pairs (name, highscore), I had to define a "Key Function" for
-      #the .sort() function "key" parameter so that it would sort descending by high score,
-      #not by alphabetical order.
-      #Had to define within highScore function, as it would not recognize outside of it.
+      # "Key Function" used for sorting list. Given that the list is loaded back as
+      # a list of tuple pairs (name, highscore), I had to define a "Key Function" for
+      # the .sort() function "key" parameter so that it would sort descending by high score,
+      # not by alphabetical order.
+      # Had to define within highScore function, as it would not recognize outside of it.
+
       def keyFunc(userPair):
-        #when called, return the score as the sort key, which is the second item in the Tuple pair.
+        # When called, return the score as the sort key, which is the second item in the Tuple pair
         return userPair[1]
       
-      #initializing list which will be pickled/dumped into.
+      # Initializing list which will be pickled/dumped into
       playerData = []
 
-      #"if the file exists, load it."
+      # If the file exists, load it
       if os.path.exists(self.__HIGHSCOREFILE):
         with open(self.__HIGHSCOREFILE, "rb") as file:
           playerData = pickle.load(file)
 
-      #reading in user initials, and then retrieving the first 3 letters.
+      # Reading in user initials, and then retrieving the first 3 letters
       userInitials = input("\nPlease input three letters for your initials: ")
-      userInitials = userInitials[:3].upper() #slicing in only first 3 characters of user input, in case they get funny.
+      userInitials = userInitials[:3].upper()   # Slicing in only first 3 characters of user input, in case they get funny
 
-      #appending a tuple the list of scores
+      # Appending a tuple to the list of scores
       playerData.append(tuple((userInitials, self.__score)))
-      #sorting the data based on score. Sorted descending.
+      # Sorting the data based on score, descending
       playerData.sort(key = keyFunc, reverse = True)
 
       print("Name | Score")
       for pair in playerData: 
-          #for every tuple pair in the list, print out the name (center aligned with 5 reserved chars and the score)
+          # For every tuple pair in the list, print out the name (center aligned with 5 reserved chars and the score)
           print(f"{format(pair[0],'^5s')}| {pair[1]}")
 
-      #following printing, open the file "highscore.data" and dump list into it, in binary.
+      # Following printing, open the file "highscore.data" and dump list into it, in binary
       with open(self.__HIGHSCOREFILE, "wb") as file:
           pickle.dump(playerData, file)
-      #closeout
+      # Closeout
 
     def initSnake(self):
+
         # Randomize coordinates
         xPos = random.randrange(0, len(self.__field[0]))
         yPos = random.randrange(0, len(self.__field))
@@ -497,7 +488,7 @@ class GameEngine:
         return obstacleExists
 
     def moveSnake(self):
-        # TODO: Mostly done, just need a better way to go around obstacles cause right now it just stops
+
         # Get current position of snake
         snake_x = self.__snake.getXCoord()
         snake_y = self.__snake.getYCoord()
@@ -548,7 +539,7 @@ class GameEngine:
                     # Move opposite direction of original
                     x_new -= x_direction
                     if self.nextMoveNotOk(x_new, y_new):
-                        # Something blocking us yet again :/
+                        # Something blocking us yet again
                         x_new = snake_x
                         y_new -= y_direction
                         if self.nextMoveNotOk(x_new, y_new):
@@ -581,20 +572,18 @@ class GameEngine:
         if isinstance(self.__field[y_new][x_new], Captain):
 
             # Output snake message
-            # if self.__captain.checkBasket():
-            # if self.__captain.getBasketVeggieCount()
             if len(self.__captain.getBasket()) >= 5:
+                # Pop 5 veggies out of Captain's basket
                 count, points_lost = self.__captain.removeVeggie(5)
                 print(f"Oh no! The snake ate {count} veggie(s) from the basket...you lost {points_lost} points!")
             elif len(self.__captain.getBasket()) > 0:
+                # Pop all remaining veggies out of Captain's basket
                 count, points_lost = self.__captain.removeVeggie(len(self.__captain.getBasket()))
                 print(f"Oh no! The snake ate {count} veggie(s) from the basket...you lost {points_lost} points!")
             else:
                 points_lost = 0
                 print("Oh no, the snake got you! Your basket is empty, you lost no points.")
 
-            # Pop 5 veggies out of Captain's basket
-            # count, points_lost = self.__captain.removeVeggie(5)
             self.__score -= points_lost
 
             # Randomize new snake coordinates after trying to touch Captain
@@ -613,29 +602,3 @@ class GameEngine:
 
         # Move snake to new spot
         self.__field[y_new][x_new] = self.__snake
-
-#Commented out, for future re-use
-
-#    def injectList(self): #creating function to inject list of veggies into basket. made to test gameOver function
-#      potato = Veggie("p", "potato", 5)
-#      onion = Veggie("o", "onion", 5)
-#      testCaptain = self.__captain = Captain(0,0)
-#
-#      for i in range(0,5):
-#        testCaptain.addVeggie(potato)
-#        self.__score += potato.getPoints()
-#        testCaptain.addVeggie(onion)
-#        self.__score += onion.getPoints()
-#
-#
-#        
-#
-##Eugene: Adding test main, so I can run the game engine file directly, and test individual functions.
-#def main():
-#    #breakpoint()
-#    test = GameEngine()
-#    test.injectList()
-#    test.gameOver()
-#    test.highScore()
-#
-#main()
