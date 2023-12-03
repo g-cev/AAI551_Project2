@@ -12,6 +12,7 @@ from Rabbit import Rabbit
 from Snake import Snake
 from Veggie import Veggie
 
+
 class GameEngine:
     __NUMBEROFVEGGIES = 30
     __NUMBEROFRABBITS = 5
@@ -35,19 +36,30 @@ class GameEngine:
         self.__snake = None
 
     def initVeggies(self):
+        """
+        This function prompts the user for a valid configuration file.
+        Using the data from that file, a field is populated with Veggie objects,
+        all at random, unique locations.
+        - Genesis
+        """
+        # Ask for config file
         fileName = input("Please input the name of the Veggie file you would like to use: ")
 
+        # Until we receive a valid file, keep asking
         while not os.path.exists(fileName):
             fileName = input("Invalid filename. Please input the name of the Veggie file you would like to use: ")
 
+        # Open file
         with open(fileName, 'r') as file:
+            # Take in first line, split by commas
             line = file.readline()
             line = line.split(",")
 
+            # First line represents dimensions - place those into row and col
             row = int(line[1])
             col = int(line[2])
 
-            # Initialize the 2D list "field"
+            # Initialize the 2D list "field" based on row and col
             self.__field = [[None for _ in range(col)] for _ in range(row)]
 
             # For each row in file, create veggie object and append to list
@@ -146,6 +158,12 @@ class GameEngine:
         self.initSnake()
 
     def remainingVeggies(self):
+        """
+        This function checks the field and returns the number of
+        remaining veggies.
+        - Genesis
+        :return: The total count of remaining veggies.
+        """
         # Examine the field and returns the number of veggies left
         veggie_count = 0
 
@@ -160,6 +178,11 @@ class GameEngine:
         return veggie_count
 
     def intro(self):
+        """
+        This function welcomes the user and describes the game.
+        - Genesis
+        """
+        # Output welcome + game description
         print("Welcome to Captain Veggie!")
         print("The rabbits have invaded your garden and you must harvest")
         print("as many vegetables as possible before rabbits eat them")
@@ -167,33 +190,42 @@ class GameEngine:
         print("so go for the high score!")
         print("BONUS: Avoid the snake, or else it'll steal your veggies!")
 
+        # Output veggies using appropriate "str" function
         print("\nThe vegetables are: ")
         for veggie in self.__vegetables:
             print(veggie)
 
+        # Output symbols for each field inhabitant
         print(f"\nCaptain Veggie is {self.BLUE}{self.__captain}{self.RESET}, the snake is {self.RED}{self.__snake}{self.RESET}, ", end="")
         print(f"and the rabbits are {self.YELLOW}{self.__rabbitList[0]}{self.RESET}'s.")
 
         print("\nGood luck!")
 
     def printField(self):
+        """
+        This function outputs a neat, 2D field with borders, as well as the number of
+        veggies in Captain Veggie's basket.
+        - Genesis
+        """
 
+        # Sanity check for number of veggies in basket
         print(f"{len(self.__captain.getBasket())} veggie(s) in basket!")
 
-        # Top border
+        # Calculate border width based of number of columns
         width = len(self.__field[0]) * 3 + 2
+
+        # Top border
         for i in range(width):
             print("#", end="")
         print("")
 
+        # For this row
         for i in range(len(self.__field)):
-
-            # Left border
+            # Left border char
             print("#", end="")
-
+            # For each position
             for h in range(len(self.__field[i])):
-
-                # Print color-coded symbols
+                # Print color-coded symbols based on field inhabitant
                 if isinstance(self.__field[i][h], Captain):
                     print(f"{self.BLUE}{format(self.__field[i][h].getSymbol(), '^3s')}{self.RESET}", end="")
                 elif isinstance(self.__field[i][h], Rabbit):
@@ -206,8 +238,7 @@ class GameEngine:
                 # Else do not print anything
                 elif self.__field[i][h] is None:
                     print(format("", '^3s'), end="")
-
-            # Right border
+            # Right border char
             print("#")
 
         # Bottom border
@@ -491,6 +522,10 @@ class GameEngine:
       # Closeout
 
     def initSnake(self):
+        """
+        This function initiates a Snake object on a random, unique
+        position on the field. - Genesis
+        """
 
         # Randomize coordinates
         xPos = random.randrange(0, len(self.__field[0]))
@@ -511,15 +546,34 @@ class GameEngine:
         self.__field[yPos][xPos] = snake
 
     def nextMoveNotOk(self, xCoord, yCoord):
+        """
+        This function checks whether the proposed position is a valid next move
+        for the snake in the field. - Genesis
+        :param xCoord: The proposed x position.
+        :param yCoord: The proposed y position.
+        :return: True if the next move is not possible, false otherwise.
+        """
+        # Assume that the next move is ok
         outOfBounds = False
         obstacleExists = False
+
+        # If it is out of bounds
         if xCoord < 0 or yCoord < 0 or xCoord >= len(self.__field[0]) or yCoord >= len(self.__field):
+            # Not ok
             outOfBounds = True
+        # If it is either out of bounds OR not null AND not the captain
         if outOfBounds or (self.__field[yCoord][xCoord] is not None and not isinstance(self.__field[yCoord][xCoord], Captain)):
+            # Then it is an obstacle, so we can't move there -- Not ok
             obstacleExists = True
+        # Return bool
         return obstacleExists
 
     def moveSnake(self):
+        """
+        This function allows the snake to chase Captain Veggie. If it is
+        stuck between obstacles, it will check ways to go around the obstacle
+        to continue chasing Captain Veggie. - Genesis
+        """
 
         # Get current position of snake
         snake_x = self.__snake.getXCoord()
@@ -557,29 +611,43 @@ class GameEngine:
             y_direction = 0
 
         # Move left/right
+
+        # If snake is in a different column than captain
         if x_direction != 0:
+            # Move 1 square towards the captain in x dir
             x_new += x_direction
+            # If snake is in the same row as captain
             if y_direction == 0:
                 # We always want to move in the y direction if x is blocked
                 y_direction = -1
+            # We now have a proposed set of coord based on conditions
+            # If these new coordinates are not ok (obstacle or out of bounds),
             if self.nextMoveNotOk(x_new, y_new):
+                # Can't move diagonally, so prioritize a y-move
                 x_new = snake_x
                 y_new += y_direction
+                # If THESE new coord are not ok,
                 if self.nextMoveNotOk(x_new, y_new):
-                    # Something in the way again, not possible to move closer to captain
+                    # Can't move diagonally, so prioritize an x-move
                     y_new = snake_y
-                    # Move opposite direction of original
+                    # Move opposite direction of x attempt
                     x_new -= x_direction
+                    # If THESE new coord are not ok,
                     if self.nextMoveNotOk(x_new, y_new):
-                        # Something blocking us yet again
+                        # Try moving in opposite direction of y attempt
                         x_new = snake_x
                         y_new -= y_direction
                         if self.nextMoveNotOk(x_new, y_new):
                             # Blocked on all directions, don't move
                             y_new = snake_y
+
         # Move up/down
+
+        # If snake is in a different row than captain
         elif y_direction != 0:
+            # Move 1 square towards the captain in y dir
             y_new += y_direction
+            # If snake is in the same col as captain
             if x_direction == 0:
                 # We always want to move in the x direction if y is blocked
                 x_direction = -1
@@ -616,6 +684,7 @@ class GameEngine:
                 points_lost = 0
                 print("Oh no, the snake got you! Your basket is empty, you lost no points.")
 
+            # Subtract points from score
             self.__score -= points_lost
 
             # Randomize new snake coordinates after trying to touch Captain

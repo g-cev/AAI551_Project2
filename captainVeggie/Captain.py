@@ -31,16 +31,23 @@ class Captain(Creature):
     return uniqueVeggies
 
   def removeVeggie(self, num):
-    # BONUS: removeVeggie function for Snake feature (steals Captain's veggies)
+    """
+    This function removes veggies from the captain's basket. - Genesis
+    :param num: The number of veggies to be removed.
+    :return: The number of veggies that were removed and the points lost.
+    """
+    # Initialize return variables
     removed_count = 0
     points_lost = 0
 
     for i in range(num):
       # If the basket is not empty
       if self.__basket:
-        # Remove veggie
+        # Add to removed_count
         removed_count += 1
+        # Add up total points lost
         points_lost += self.__basket[-1].getPoints()
+        # Pop veggie from basket list
         self.__basket.pop(-1)
 
     return removed_count, points_lost
