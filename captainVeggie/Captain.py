@@ -11,10 +11,10 @@ class Captain(Creature):
 
   Attributes:
 
-  :param xCoord: X-Coordinate of the Captain's location on the printed field. This will be continuously updated as the game continues.
+  :param xCoord: X-Coordinate of the Captain's location on the printed field. This will be continuously updated as the player moves the Captain.
   :type xCoord: int
 
-  :param yCoord: Y-Coordinate of the Captain's location on the printed field. This will be continuously updated as the game continues.
+  :param yCoord: Y-Coordinate of the Captain's location on the printed field. This will be continuously updated as the player moves the Captain.
   :type yCoord: int
 
   :param Basket: List that will contain all of the Veggie objects collected by player from playing field. Will be used to calculate final score.
