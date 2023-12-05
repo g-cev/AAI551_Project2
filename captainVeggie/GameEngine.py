@@ -483,6 +483,17 @@ class GameEngine:
         print(f"{self.BLUE}Final score: {self.__score}{self.RESET}")
     
     def highScore(self):
+      """
+      Prompts the user for their initials in order to store and pickle their score in descending order.
+      Stores data in (Initial, Score) Tuple Format, which is put into a list.
+      List is sorted by score in descending order. Accomplished using .sort() and key function keyFunc.
+
+      :param self: Refers to specific instance of instantiated object -- "itself."
+      :type self: GameEngine() obj.
+      
+      -Eugene
+
+      """
       
       # "Key Function" used for sorting list. Given that the list is loaded back as
       # a list of tuple pairs (name, highscore), I had to define a "Key Function" for
@@ -491,6 +502,13 @@ class GameEngine:
       # Had to define within highScore function, as it would not recognize outside of it.
 
       def keyFunc(userPair):
+        """
+        Key Function for sorting by the second element of a User's "Highcore Tuple" pair, since the Tuple cannot be modified for easier sorting.
+        
+        :param userPair: Tuple containing initials and score in a Tuple (init, score) in that order.
+        :type userPair: Tuple.
+        :return: int score by which sorting will occur.
+        """
         # When called, return the score as the sort key, which is the second item in the Tuple pair
         return userPair[1]
       

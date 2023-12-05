@@ -5,8 +5,30 @@
 from Creature import Creature
 
 class Captain(Creature):
+  """
+  Class that defines the Captain object. Inherits from Creature class
+
+
+  Attributes:
+
+  :param XCoord: X-Coordinate of the Captain's location on the printed field. This will be continuously updated as the game continues.
+  :type XCoord: int
+
+  :param YCoord: Y-Coordinate of the Captain's location on the printed field. This will be continuously updated as the game continues.
+  :type YCoord: int
+
+  :param Basket: List that will contain all of the Veggie objects collected by player from playing field. Will be used to calculate final score.
+  :type Basket: List() object.
+
+
+  """
   def __init__(self, xCoord, yCoord):
-    # Provide values to Creature's constructor
+    """
+    Initializes attributes of Captain class object.
+    X-Coordinates and Y-Coordiantes for Captain will be filled with RNG values. 
+    Symbol for Captain is fixed to "V", for Captain Veggie.
+    Captain's "Basket" object is by default empty.
+    """
     Creature.__init__(self, "V", xCoord, yCoord)
     self.__basket = []  # Empty list 'Basket' that will contain list of all veggies collected by Captain
 
