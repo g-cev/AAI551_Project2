@@ -452,8 +452,34 @@ class GameEngine:
             print(f"{movement} is not a valid option.")
 
     def gameOver(self):
+        """
+        Game-over condition.
+
+        If the basket is not empty: 
+          Finds all unique veggies still in basket, total Veggie() objects collected, and tallies points.
+          Prints list of veggies in alphabetical order with quantity collected and point values specified.
+          Prints total number of points earned, as well as how many were earned from each type of veggie collected.
+
+        If the basket is empty:
+          Remind the user the basket is empty.
+          Print total number of points earned (zero).
+
+        -Eugene
+
+        """
         
-        def keyFunc(veg):   # Key function for sorting set: key is to sort by veggie name, in alphabetical order
+        def keyFunc(veg):
+            """
+            Key function for sorting set using the sorted(): key is to sort by veggie name, in alphabetical order.
+            Key is defined by returning name of each Veggie() object for sort() function to properly sort.
+
+            :param veg: The Veggie() object being passed in.
+            :type veg: Veggie() object (pointer)
+
+            :return: String. Name of Vggie() instance for sorted function to sort Set() into alphabetical order.
+
+            -Eugene
+            """
             return veg.getName()
         
         print(f"\n{self.RED}GAME OVER{self.RESET}")
@@ -504,10 +530,12 @@ class GameEngine:
       def keyFunc(userPair):
         """
         Key Function for sorting by the second element of a User's "Highcore Tuple" pair, since the Tuple cannot be modified for easier sorting.
-        
+
         :param userPair: Tuple containing initials and score in a Tuple (init, score) in that order.
         :type userPair: Tuple.
         :return: int score by which sorting will occur.
+
+        -Eugene
         """
         # When called, return the score as the sort key, which is the second item in the Tuple pair
         return userPair[1]

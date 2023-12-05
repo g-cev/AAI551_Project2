@@ -11,11 +11,11 @@ class Captain(Creature):
 
   Attributes:
 
-  :param XCoord: X-Coordinate of the Captain's location on the printed field. This will be continuously updated as the game continues.
-  :type XCoord: int
+  :param xCoord: X-Coordinate of the Captain's location on the printed field. This will be continuously updated as the game continues.
+  :type xCoord: int
 
-  :param YCoord: Y-Coordinate of the Captain's location on the printed field. This will be continuously updated as the game continues.
-  :type YCoord: int
+  :param yCoord: Y-Coordinate of the Captain's location on the printed field. This will be continuously updated as the game continues.
+  :type yCoord: int
 
   :param Basket: List that will contain all of the Veggie objects collected by player from playing field. Will be used to calculate final score.
   :type Basket: List() object.
@@ -33,18 +33,48 @@ class Captain(Creature):
     self.__basket = []  # Empty list 'Basket' that will contain list of all veggies collected by Captain
 
   def addVeggie(self, veg): # veg is to be a Veggie-class object. Adds vegetable object to list of collected vegetables
+    """
+    Adds vegetable to Captain class object "Basket" attribute. This will be called when the player collects a Veggie object.
+
+    :param veg: The vegetable that will be appended to the "Basket" list.
+    :type veg: Veggie() Class Object.
+
+    """
     self.__basket.append(veg)
 
   def checkBasket(self):  # Returns boolean. Asks if basket is empty or not (True = not empty, False = empty)
+    """
+    Checks if the Captain's basket is empty or not.
+
+    :return: bool. 
+      Returns FALSE if empty.
+      Returns TRUE if not empty.
+
+      - Eugene
+    """
     if not self.__basket:
       return False
     else:
       return True
 
   def getBasket(self):  # Returns basket list
+    """
+    Fetches the List denoting the Captain's basket for external use.
+
+    :return: List() Object (pointer)
+
+    -Eugene
+    """
     return self.__basket
 
-  def getUniqueVeggies(self): # Returns set of unique vegetables collected. Will be used in gameOver function
+  def getUniqueVeggies(self):
+    """
+    Creates and sends out a list of all of the unique vegetables in the Captain's basket. Used for point breakdown readability.
+
+    :return: Set() object (pointer)
+
+    -Eugene
+    """
     uniqueVeggies = set()
     # For every single vegetable in Captain's basket
     for veg in self.__basket:

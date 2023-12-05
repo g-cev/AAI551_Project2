@@ -5,7 +5,7 @@
 
 class FieldInhabitant:
   """
-  Class defining FieldInhabitant object. Will be inherited by Veggie and Creature classes
+  Class defining FieldInhabitant object. Will be inherited by Veggie and Creature classes.
 
   
   Attributes:
