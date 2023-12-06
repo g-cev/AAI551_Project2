@@ -1,10 +1,8 @@
+# Name: Genesis Cevallos, Eugene Kozlakov, Aleese Mukhamedjanova
+# Date: 12/8/2023
+# Desc: Class file for 'Snake' class. Inherits Creature class (superClass/parent). Not inherited by any other class.
+
 from Creature import Creature
-
-#Name: Genesis Cevallos, Eugene Kozlakov, Aleese Mukhamedjanova
-#Date: 11/24/2023
-#Desc: Class file for 'Snake' class. Inherits FieldInhabitant class (superClass/parent) 'Creature'.
-#       Will not be inherited by any other class.
-
 
 class Snake(Creature):
     def __init__(self, xCoord, yCoord):

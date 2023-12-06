@@ -1,8 +1,8 @@
-from GameEngine import GameEngine
+# Name: Genesis Cevallos, Eugene Kozlakov, Aleese Mukhamedjanova
+# Date: 12/8/2023
+# Desc: Main function for Captain Veggie game. Will import GameEngine class with inheritances and instantiate game.
 
-#Name: Genesis Cevallos, Eugene Kozlakov, Aleese Mukhamedjanova 
-#Date: 11/18/2023
-#Desc: Main function for Captain Veggie game. Will import GameEngine class with inheritances and instantiate game.
+from GameEngine import GameEngine
 
 
 def main():
