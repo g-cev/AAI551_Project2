@@ -251,10 +251,6 @@ class GameEngine:
             print("#", end="")
 
     def getScore(self):
-        """
-        Returns the player's current standing score. Called in main.py.
-        -Eugene
-        """
         return self.__score
 
     def moveRabbits(self):
