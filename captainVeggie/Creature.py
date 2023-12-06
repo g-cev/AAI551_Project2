@@ -18,7 +18,7 @@ class Creature(FieldInhabitant):
   :param xCoord: X-Coordinate of the Creature's location on the printed field. This will be continuously updated as the game continues. Will be RNG initialized.
   :type xCoord: int
 
-  :param yCoord: Y-Coordinate of the Creature's location on the printed field. This will be continuously updated as the game continues. Will be RNG intialized.
+  :param yCoord: Y-Coordinate of the Creature's location on the printed field. This will be continuously updated as the game continues. Will be RNG initialized.
   :type yCoord: int
   """
   def __init__(self, sym, xCoord, yCoord):  # Inherits "setSymbol"/"getSymbol" funcs

@@ -33,26 +33,23 @@
     - [x] a. initVeggies()
     - [x] b. initCaptain()
     - [x] c. initRabbits()
-- [ ] remainingVeggies()
+- [x] remainingVeggies()
 - [x] intro()
-- [ ] printField()
-- [ ] getScore()
-- [ ] moveRabbits()
-- [ ] moveCaptain()
-    - [ ] a. moveCptVertical()
-    - [ ] b. moveCptHorizontal()
-- [ ] gameOver()
-- [ ] highscore()
-- [ ] BONUS()!!!!!!!!
+- [x] printField()
+- [x] getScore()
+- [x] moveRabbits()
+- [x] moveCaptain()
+    - [x] a. moveCptVertical()
+    - [x] b. moveCptHorizontal()
+- [x] gameOver()
+- [x] highscore()
+- [x] BONUS()!!!!!!!!
 
 #### Genesis
-- initVeggie(), edited printField() and intro()
-- TODO: remainingVeggies(), while loop in main, setup BONUS in GameEngine.py
+- initVeggie(), edited printField() and intro(), remainingVeggies(), while loop in main, setup BONUS in GameEngine.py
 
 #### Eugene
-- Set up classes/inheritance, started initVeggie()
-- TODO: getScore(), gameOver(), highscore()
+- Set up classes/inheritance, started initVeggie(), getScore(), gameOver(), highscore()
 
 #### Aleese
-- initCaptain(), initRabbit(), edited printField() and intro()
-- TODO: moveRabbits(), moveCpt()/vertical/horizontal
+- initCaptain(), initRabbit(), edited printField(), intro(), moveRabbits(), moveCpt()/vertical/horizontal

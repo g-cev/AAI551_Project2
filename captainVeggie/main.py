@@ -6,6 +6,9 @@ from GameEngine import GameEngine
 
 
 def main():
+  """
+  This function serves as the driver to the game's functions.
+  """
   game = GameEngine()
   game.initializeGame()
   game.intro()

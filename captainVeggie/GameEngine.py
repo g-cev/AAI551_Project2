@@ -77,7 +77,9 @@ class GameEngine:
 
         # Set to hold "occupied" veggie spaces
         occupied = set()
-        random.seed(3)
+
+        # To use a specific seed for testing, please uncomment the line below:
+        # random.seed("your seed here")
 
         while len(occupied) < self.__NUMBEROFVEGGIES:
             # Generate a random xy position within field bounds
@@ -152,6 +154,9 @@ class GameEngine:
             self.__field[y_pos][x_pos] = rabbit
 
     def initializeGame(self):
+        """
+        This function calls the initialization functions for each field inhabitant.
+        """
         self.initVeggies()
         self.initCaptain()
         self.initRabbits()
@@ -476,7 +481,7 @@ class GameEngine:
             :param veg: The Veggie() object being passed in.
             :type veg: Veggie() object (pointer)
 
-            :return: String. Name of Vggie() instance for sorted function to sort Set() into alphabetical order.
+            :return: String. Name of Veggie() instance for sorted function to sort Set() into alphabetical order.
 
             -Eugene
             """
@@ -492,8 +497,6 @@ class GameEngine:
           basket = self.__captain.getBasket() 
           # Return set of names of unique vegetables picked up by Captain, then sort them
           uniqueVeggies = sorted(self.__captain.getUniqueVeggies(), key = keyFunc) 
-
-          # TODO: Eugene: QOL: figure out how to update scores of initials already present on scoreboard.
 
           # For every unique vegetable picked up by the player
           for veg in uniqueVeggies:
@@ -529,7 +532,7 @@ class GameEngine:
 
       def keyFunc(userPair):
         """
-        Key Function for sorting by the second element of a User's "Highcore Tuple" pair, since the Tuple cannot be modified for easier sorting.
+        Key Function for sorting by the second element of a User's "Highscore Tuple" pair, since the Tuple cannot be modified for easier sorting.
 
         :param userPair: Tuple containing initials and score in a Tuple (init, score) in that order.
         :type userPair: Tuple.

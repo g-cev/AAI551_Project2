@@ -25,7 +25,7 @@ class FieldInhabitant:
     """
     Sets the FieldInhabitant object's symbol on user input sym.
 
-    :param sym: User input for FieldInhabitant symbol represenation
+    :param sym: User input for FieldInhabitant symbol representation
     :type sym: char
     """
     self._symbol = sym
@@ -42,6 +42,6 @@ class FieldInhabitant:
     """
     Returns a formatted string to be used in the print() function.
 
-    :return: string/char(?)
+    :return: A formatted string
     """
     return f"{self._symbol}"

@@ -25,7 +25,7 @@ class Captain(Creature):
   def __init__(self, xCoord, yCoord):
     """
     Initializes attributes of Captain class object.
-    X-Coordinates and Y-Coordiantes for Captain will be filled with RNG values. 
+    X-Coordinates and Y-Coordinates for Captain will be filled with RNG values.
     Symbol for Captain is fixed to "V", for Captain Veggie.
     Captain's "Basket" object is by default empty.
     """

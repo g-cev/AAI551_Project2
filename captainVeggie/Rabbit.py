@@ -10,7 +10,7 @@ class Rabbit(Creature):
 
   Attributes:
 
-  :param xCoord: X-Coordinate of the Rabbits's location on the printed field. This will be continuously updated at random as the game continues, to simulate random movement.
+  :param xCoord: X-Coordinate of the Rabbit's location on the printed field. This will be continuously updated at random as the game continues, to simulate random movement.
   :type xCoord: int
 
   :param yCoord: Y-Coordinate of the Rabbit's location on the printed field. This will be continuously updated at random as the game continues, to simulate random movement.

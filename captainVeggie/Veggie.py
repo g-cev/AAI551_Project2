@@ -65,7 +65,7 @@ class Veggie(FieldInhabitant):
     """
     Returns properly formatted string for use in print() function.
 
-    :return int:
+    :return: int
 
     Sample return: "O: Onion, 5 points"
     """
