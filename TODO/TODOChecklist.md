@@ -1,8 +1,8 @@
 # TODO Folder
 - [x] Share contact info
-- [ ] Fill out group expectations .docx
-- [ ] Figure out to pull repo onto personal computer
-- [ ] Delegate tasks in task breakdown
+- [x] Fill out group expectations .docx
+- [x] Figure out to pull repo onto personal computer
+- [x] Delegate tasks in task breakdown
 
 ## Task Breakdown
 
