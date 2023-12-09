@@ -15,3 +15,5 @@ Group Members: Aleese Mukhamedjanova, Eugene Kozlakov, Genesis Cevallos
 #### /captainVeggie
 - Project code 
 
+## The Captain Veggie
+![The Captain Veggie](social.PNG)
