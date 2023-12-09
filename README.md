@@ -3,16 +3,16 @@
 Group Members: Aleese Mukhamedjanova, Eugene Kozlakov, Genesis Cevallos
 
 ## Folders
-#### /inputOutputFiles
+#### ./inputOutputFiles
 - Configuration files
 - Example outputs for the project
 
-#### /TODO
+#### ./TODO
 - Individual team member assignments 
 - Overarching tasks
 - Task deadlines
 
-#### /captainVeggie
+#### ./captainVeggie
 - Project code 
 
 ## The Captain Veggie
